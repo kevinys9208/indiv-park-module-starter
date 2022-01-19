@@ -34,18 +34,18 @@
 		</discriminator>
 		<sift>
 			<appender name="FILE-${deviceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
-				<file>${user.dir}/logs/${ID}/%d{yyyy-MM-dd}.%i.log</file>
+				<file>${user.dir}/logs/${ID}/${ID}_%d{yyyy-MM-dd}.%i.log</file>
 				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-					<fileNamePattern>${user.dir}/logs/${ID}/%d{yyyy-MM-dd}.%i.log.zip
+					<fileNamePattern>${user.dir}/logs/${ID}/${ID}_%d{yyyy-MM-dd}.%i.log.zip
 					</fileNamePattern>
 					<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-						<maxFileSize>5MB</maxFileSize>
+						<maxFileSize>30MB</maxFileSize>
 					</timeBasedFileNamingAndTriggeringPolicy>
 					<maxHistory>7</maxHistory>
 				</rollingPolicy>
 				<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
 		            <evaluator class="ch.qos.logback.classic.boolex.JaninoEventEvaluator">
-		                <expression>return !message.isEmpty() &amp;&amp; !message.equals("line") &amp;&amp; level &lt;= ERROR;</expression>
+		                <expression>return !message.isEmpty() &amp;&amp; level &lt;= ERROR;</expression>
 		            </evaluator>
 		            <OnMatch>NEUTRAL</OnMatch>
 		            <OnMismatch>DENY</OnMismatch>
