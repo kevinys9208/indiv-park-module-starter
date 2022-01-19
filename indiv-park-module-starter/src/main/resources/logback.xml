@@ -34,7 +34,7 @@
 		</discriminator>
 		<sift>
 			<appender name="FILE-${deviceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
-				<file>${user.dir}/logs/${ID}/${ID}_%d{yyyy-MM-dd}.%i.log</file>
+				<file>${user.dir}/logs/${ID}/${ID}.log</file>
 				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 					<fileNamePattern>${user.dir}/logs/${ID}/${ID}_%d{yyyy-MM-dd}.%i.log.zip
 					</fileNamePattern>
