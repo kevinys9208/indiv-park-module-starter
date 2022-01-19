@@ -73,15 +73,18 @@ public class ConfigurationLoader {
 			os = new OutputStreamWriter(fos, "UTF-8");
 			writer = new BufferedWriter(os);
 			writer.write("# 모듈을 구성하기 위한 설정 정보는 리스트의 형태로 작성되어야 합니다.\r\n");
+			writer.write("# (server 	type : tcp, ws)\r\n");
+			writer.write("# (client 	type : tcp, ws)\r\n");
+			writer.write("# (database 	type : oracle, tibero, sqlite)\r\n");
 			writer.write("#\r\n");
 			writer.write("# server:\r\n");
-			writer.write("#  - { group: string, type: tcp or ws, port: int, bossThread: int,  workerThread: int }...\r\n");
+			writer.write("#  - { group: string, type: string, port: int, bossThread: int,  workerThread: int }...\r\n");
 			writer.write("#\r\n");
 			writer.write("# client:\r\n");
-			writer.write("#  - { group: string, type: tcp or ws, workerThread: int }...\r\n");
+			writer.write("#  - { group: string, type: string, workerThread: int }...\r\n");
 			writer.write("#\r\n");
 			writer.write("# database:\r\n");
-			writer.write("#  - { name: string, type: oracle or tibero, ip: string, port: int, sid: string, user: string, password: string }...");
+			writer.write("#  - { name: string, type: string, ip: string, port: int, sid: string, user: string, password: string }...");
 			writer.flush();
 
 		} finally {
