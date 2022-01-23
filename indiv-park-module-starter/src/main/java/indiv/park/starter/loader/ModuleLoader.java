@@ -7,6 +7,7 @@ import java.util.Set;
 import org.reflections.Reflections;
 
 import indiv.park.starter.annotation.Module;
+import indiv.park.starter.exception.ModuleException;
 import indiv.park.starter.inheritance.ModuleBase;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +23,7 @@ public class ModuleLoader {
 	}
 
 	@SuppressWarnings("all")
-	public void load() {
+	public void load() throws ModuleException {
 		logger.info("모듈 구성을 시작합니다.");
 		
 		Reflections reflections = new Reflections("indiv.park");
@@ -39,28 +40,37 @@ public class ModuleLoader {
 		final String done = "{} 초기화가 완료되었습니다.";
 		
 		for (Class<?> clazz : moduleSet) {
+			logger.info("");
+			logger.info(init, clazz.getSimpleName());
+			
+			String name = clazz.getAnnotation(Module.class).name();
+			
+			Field field = null;
 			try {
-				logger.info("");
-				logger.info(init, clazz.getSimpleName());
-				
-				String name = clazz.getAnnotation(Module.class).name();
-				
-				Field field = clazz.getDeclaredField("INSTANCE");
-				field.setAccessible(true);
-				
-				ModuleBase module = (ModuleBase) field.get(clazz);
-				
-				if (configurationMap != null) {
-					Object configuration = configurationMap.get(name);
-					module.setConfiguration(configuration);
-				}
-				
-				module.initialize(mainClass);
-				logger.info(done, clazz.getSimpleName());
+				field = clazz.getDeclaredField("INSTANCE");
 				
 			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
+				String msg = name + "의 INSTANCE 필드를 가져오는데 실패함.";
+				throw new ModuleException(msg, e.getCause());
 			}
+			field.setAccessible(true);
+			
+			ModuleBase module = null;
+			try {
+				module = (ModuleBase) field.get(clazz);
+				
+			} catch (Exception e) {
+				String msg = name + "의 INSTANCE 필드 값을 가져오는데 실패함.";
+				throw new ModuleException(msg, e.getCause());
+			}
+			
+			if (configurationMap != null) {
+				Object configuration = configurationMap.get(name);
+				module.setConfiguration(configuration);
+			}
+			
+			module.initialize(mainClass);
+			logger.info(done, clazz.getSimpleName());
 		}
 	}
 	
