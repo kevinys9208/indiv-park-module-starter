@@ -12,7 +12,7 @@ import indiv.park.starter.inheritance.ModuleBase;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ModuleLoader {
+public final class ModuleLoader {
 
 	private final Map<String, Object> configurationMap;
 	private final Class<?> mainClass;

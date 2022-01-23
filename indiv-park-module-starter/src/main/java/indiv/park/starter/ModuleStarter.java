@@ -11,8 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ModuleStarter {
 	
-	private ModuleStarter() {
-	}
+	private ModuleStarter() {}
 
 	public static void start(Class<?> mainClass) {
 		try {
