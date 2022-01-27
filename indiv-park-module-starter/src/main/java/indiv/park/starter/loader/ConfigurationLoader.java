@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.Yaml;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ConfigurationLoader {
+public final class ConfigurationLoader {
 
 	public Map<String, Object> load() throws IOException {
 		logger.info("설정 정보를 로드합니다.");

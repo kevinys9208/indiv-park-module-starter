@@ -9,7 +9,7 @@ import indiv.park.starter.loader.ModuleLoader;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ModuleStarter {
+public final class ModuleStarter {
 	
 	private ModuleStarter() {}
 

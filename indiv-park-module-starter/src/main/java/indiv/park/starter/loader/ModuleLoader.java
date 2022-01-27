@@ -7,12 +7,11 @@ import java.util.Set;
 import org.reflections.Reflections;
 
 import indiv.park.starter.annotation.Module;
-import indiv.park.starter.exception.ModuleException;
 import indiv.park.starter.inheritance.ModuleBase;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ModuleLoader {
+public final class ModuleLoader {
 
 	private final Map<String, Object> configurationMap;
 	private final Class<?> mainClass;
@@ -23,7 +22,7 @@ public class ModuleLoader {
 	}
 
 	@SuppressWarnings("all")
-	public void load() throws ModuleException {
+	public void load() throws Exception {
 		logger.info("모듈 구성을 시작합니다.");
 		
 		Reflections reflections = new Reflections("indiv.park");
@@ -45,24 +44,10 @@ public class ModuleLoader {
 			
 			String name = clazz.getAnnotation(Module.class).name();
 			
-			Field field = null;
-			try {
-				field = clazz.getDeclaredField("INSTANCE");
-				
-			} catch (Exception e) {
-				String msg = name + "의 INSTANCE 필드를 가져오는데 실패함.";
-				throw new ModuleException(msg, e.getCause());
-			}
+			Field field = clazz.getDeclaredField("INSTANCE");
 			field.setAccessible(true);
 			
-			ModuleBase module = null;
-			try {
-				module = (ModuleBase) field.get(clazz);
-				
-			} catch (Exception e) {
-				String msg = name + "의 INSTANCE 필드 값을 가져오는데 실패함.";
-				throw new ModuleException(msg, e.getCause());
-			}
+			ModuleBase module = (ModuleBase) field.get(clazz);
 			
 			if (configurationMap != null) {
 				Object configuration = configurationMap.get(name);

@@ -10,26 +10,27 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.joran.spi.JoranException;
 
-public class LoggerLoader {
+public final class LoggerLoader {
 
 	private LoggerContext loggerContext;
 
 	public void load(String path) throws JoranException, IOException {
 		loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 		
-		JoranConfigurator log4jconfig = new JoranConfigurator();
-		log4jconfig.setContext((Context) loggerContext);
+		JoranConfigurator logbackConfig = new JoranConfigurator();
+		logbackConfig.setContext((Context) loggerContext);
 		loggerContext.reset();
 		
 		try {
-			log4jconfig.doConfigure(path);
+			logbackConfig.doConfigure(path);
 			
 		} catch (JoranException e) {
 			InputStream defaultFile = null;
 			
 			try {
 				defaultFile = getClass().getClassLoader().getResourceAsStream("logback.xml");
-				log4jconfig.doConfigure(defaultFile);
+				
+				logbackConfig.doConfigure(defaultFile);
 				
 			} finally {
 				if (defaultFile != null) {
