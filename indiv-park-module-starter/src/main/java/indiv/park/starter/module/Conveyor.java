@@ -24,7 +24,7 @@ public final class Conveyor<P_IN> {
 		return new Conveyor<P_OUT>(mapper.apply(product));
 	}
 
-	public final <P_WITH, P_OUT> Conveyor<P_OUT> nextWith(BiFunction<? super P_IN, P_WITH, ? extends P_OUT> mapper, P_WITH with) {
+	public final <P_WITH, P_OUT> Conveyor<P_OUT> nextWith(BiFunction<? super P_IN, ? super P_WITH, ? extends P_OUT> mapper, P_WITH with) {
 		Objects.requireNonNull(mapper);
 		return new Conveyor<P_OUT>(mapper.apply(product, with));
 	}
@@ -34,7 +34,7 @@ public final class Conveyor<P_IN> {
 		consumer.accept(product);
 	}
 	
-	public final <P_WITH> void finWith(BiConsumer<? super P_IN, P_WITH> consumer, P_WITH with) {
+	public final <P_WITH> void finWith(BiConsumer<? super P_IN, ? super P_WITH> consumer, P_WITH with) {
 		Objects.requireNonNull(consumer);
 		consumer.accept(product, with);
 	}
