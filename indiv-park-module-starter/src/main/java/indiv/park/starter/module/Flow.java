@@ -26,7 +26,5 @@ public final class Flow {
 		public void request(long n);
 		
 		public void cancel(Throwable throwable);
-
-		public void cancel();
 	}
 }
