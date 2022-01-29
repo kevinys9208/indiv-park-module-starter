@@ -20,8 +20,6 @@ public final class ModuleStarter {
 			LoggerLoader loggerLoader = new LoggerLoader();
 			loggerLoader.load("config/logback.xml");
 			
-			logger.info("");
-
 			ConfigurationLoader propertyLoader = new ConfigurationLoader();
 			Map<String, Object> configurationMap = propertyLoader.load();
 
