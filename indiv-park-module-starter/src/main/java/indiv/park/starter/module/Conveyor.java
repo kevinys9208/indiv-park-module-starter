@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class Conveyor<P_IN> {
+public final class Conveyor<P_IN> {
 
 	private final P_IN product;
 

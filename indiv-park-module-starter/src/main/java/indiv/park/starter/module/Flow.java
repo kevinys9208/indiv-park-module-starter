@@ -2,9 +2,7 @@ package indiv.park.starter.module;
 
 public final class Flow {
 
-	private Flow() {
-
-	}
+	private Flow() {}
 
 	@FunctionalInterface
 	public static interface Publisher<T> {
@@ -26,17 +24,9 @@ public final class Flow {
 	public static interface Subscription {
 
 		public void request(long n);
+		
+		public void cancel(Throwable throwable);
 
 		public void cancel();
-	}
-
-	public static interface Processor<T, R> extends Subscriber<T>, Publisher<R> {
-
-	}
-
-	static final int DEFAULT_BUFFER_SIZE = 256;
-
-	public static int defaultBufferSize() {
-		return DEFAULT_BUFFER_SIZE;
 	}
 }
