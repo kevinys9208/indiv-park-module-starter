@@ -22,7 +22,7 @@ public final class ConfigurationLoader {
 		FileInputStream fileInputStream = null;
 		
 		try {
-			String configPath = System.getProperty("user.dir") + "\\config";
+			String configPath = System.getProperty("user.dir") + File.separator + "config";
 			
 			File config = new File(configPath);
 			if (!config.exists()) {
@@ -30,17 +30,17 @@ public final class ConfigurationLoader {
 				config.mkdir();
 				
 				logger.info("application.yml 파일을 생성합니다.");
-				createApplicataionYAML(new File(configPath + "\\application.yml"));
+				createApplicataionYAML(new File(configPath +  File.separator + "application.yml"));
 				
 				logger.info("프로세스를 재시작해 주시기 바랍니다.");
 				
 				System.exit(0);
 			}
 			
-			File yml = new File(configPath + "\\application.yml");
+			File yml = new File(configPath + File.separator + "application.yml");
 			if (!yml.exists()) {
 				logger.info("application.yml 파일을 생성합니다.");
-				createApplicataionYAML(new File(configPath + "\\application.yml"));
+				createApplicataionYAML(new File(configPath + File.separator + "application.yml"));
 				
 				logger.info("프로세스를 재시작해 주시기 바랍니다.");
 				
