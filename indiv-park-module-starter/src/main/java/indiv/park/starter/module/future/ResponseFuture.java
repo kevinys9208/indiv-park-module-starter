@@ -1,6 +1,5 @@
 package indiv.park.starter.module.future;
 
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -8,54 +7,47 @@ import java.util.concurrent.TimeoutException;
 
 public class ResponseFuture<K, V> {
 
-	private final CountDownLatch countDownLatch = new CountDownLatch(1);
-	private final long createTime = System.currentTimeMillis();
-	private final K id;
+	public final K id;
+	public final long createTime;
 
-	public ResponseFuture(K id) {
+	private ResponseFuture(K id, ResponseFutureListener<K, V> remover) {
 		this.id = id;
+		this.createTime = System.currentTimeMillis();
+		
+		this.countDownLatch = new CountDownLatch(1);
+		this.remover = remover;
 	}
 	
-	private ResponseFutureListener<K, V> remover;
+	private final CountDownLatch countDownLatch;
+	private final ResponseFutureListener<K, V> remover;
+	
 	private V response;
 	
-	public boolean isDone() {
-		if (response != null) {
-			return true;
-		}
-		return false;
+	public static <K, V> ResponseFuture<K, V> newInstance(K id, ResponseFutureListener<K, V> remover) {
+		return new ResponseFuture<K, V>(id, remover);
 	}
 
-	public Optional<V> get() throws InterruptedException, ExecutionException {
+	public V get() throws InterruptedException, ExecutionException {
 		countDownLatch.await();
 		remover.operationComplete(this);
-        return Optional.ofNullable(response);
+        return response;
 	}
 
-	public Optional<V> get(long timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+	public V get(long timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
 		countDownLatch.await(timeout, timeUnit);
 		remover.operationComplete(this);
-		return Optional.ofNullable(response);
+		return response;
 	}
 
 	public void setResponse(V response) {
 		this.response = response;
 		countDownLatch.countDown();
 	}
-
-	public long createTime() {
-		return createTime;
-	}
 	
-	public K id() {
-		return id;
-	}
-	
-	public void addRemover(ResponseFutureListener<K, V> remover) {
-		this.remover = remover;
-	}
-	
-	public void clearRemover() {
-		this.remover = null;
+	public boolean isDone() {
+		if (response != null) {
+			return true;
+		}
+		return false;
 	}
 }
