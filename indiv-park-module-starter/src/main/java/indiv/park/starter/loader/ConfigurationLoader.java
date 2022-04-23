@@ -58,9 +58,9 @@ public final class ConfigurationLoader {
 	}
 
 	private void createApplicataionYAML(File file) throws IOException {
-		BufferedWriter writer = null;
-		OutputStreamWriter os = null;
-		FileOutputStream fos = null;
+		BufferedWriter writer 	= null;
+		OutputStreamWriter os 	= null;
+		FileOutputStream fos	= null;
 
 		try {
 			file.createNewFile();
