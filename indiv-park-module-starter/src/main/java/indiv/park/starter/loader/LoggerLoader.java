@@ -39,8 +39,4 @@ public final class LoggerLoader {
 			}
 		}
 	}
-	
-	public LoggerContext getLoggerContext() {
-		return loggerContext;
-	}
 }

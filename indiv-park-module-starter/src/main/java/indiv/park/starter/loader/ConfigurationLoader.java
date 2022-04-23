@@ -18,7 +18,7 @@ public final class ConfigurationLoader {
 	public Map<String, Object> load() throws IOException {
 		logger.info("설정 정보를 로드합니다.");
 		
-		Map<String, Object> property = null;
+		Map<String, Object> property 	= null;
 		FileInputStream fileInputStream = null;
 		
 		try {
@@ -33,7 +33,6 @@ public final class ConfigurationLoader {
 				createApplicataionYAML(new File(configPath +  File.separator + "application.yml"));
 				
 				logger.info("프로세스를 재시작해 주시기 바랍니다.");
-				
 				System.exit(0);
 			}
 			
@@ -43,21 +42,18 @@ public final class ConfigurationLoader {
 				createApplicataionYAML(new File(configPath + File.separator + "application.yml"));
 				
 				logger.info("프로세스를 재시작해 주시기 바랍니다.");
-				
 				System.exit(0);
 			}
 			
 			fileInputStream = new FileInputStream(yml);
-			property = new Yaml().load(fileInputStream);
+			property 		= new Yaml().load(fileInputStream);
 			
-			logger.info("");
+			System.out.println();
 
 			return property;
 			
 		} finally {
-			if (fileInputStream != null) {
-				fileInputStream.close();
-			}
+			if (fileInputStream != null)	fileInputStream.close();
 		}
 	}
 
@@ -69,9 +65,10 @@ public final class ConfigurationLoader {
 		try {
 			file.createNewFile();
 
-			fos = new FileOutputStream(file, false);
-			os = new OutputStreamWriter(fos, "UTF-8");
-			writer = new BufferedWriter(os);
+			fos 	= new FileOutputStream(file, false);
+			os 		= new OutputStreamWriter(fos, "UTF-8");
+			writer	= new BufferedWriter(os);
+			
 			writer.write("# 모듈을 구성하기 위한 설정 정보는 리스트의 형태로 작성되어야 합니다.\r\n");
 			writer.write("#\r\n");
 			writer.write("# server: (type: tcp, ws)\r\n");
@@ -82,18 +79,13 @@ public final class ConfigurationLoader {
 			writer.write("#\r\n");
 			writer.write("# database: (type: oracle, tibero, sqlite)\r\n");
 			writer.write("#  - { name: string, type: string, ip: string, port: int, sid: string, user: string, password: string }...");
+			
 			writer.flush();
 
 		} finally {
-			if (writer != null) {
-				writer.close();
-			}
-			if (os != null) {
-				os.close();
-			}
-			if (fos != null) {
-				fos.close();
-			}
+			if (writer 	!= null)	writer.close();
+			if (os 		!= null)	os.close();
+			if (fos 	!= null) 	fos.close();
 		}
 	}
 }

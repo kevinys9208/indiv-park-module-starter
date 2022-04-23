@@ -39,7 +39,7 @@ public final class ModuleLoader {
 		final String done = "{} 초기화가 완료되었습니다.";
 		
 		for (Class<?> clazz : moduleSet) {
-			logger.info("");
+			System.out.println();
 			logger.info(init, clazz.getSimpleName());
 			
 			String name = clazz.getAnnotation(Module.class).name();
