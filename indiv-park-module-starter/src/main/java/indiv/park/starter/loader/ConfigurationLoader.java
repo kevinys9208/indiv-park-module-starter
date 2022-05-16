@@ -74,7 +74,7 @@ public final class ConfigurationLoader {
 			writer.write("# server: (type: tcp, http)\r\n");
 			writer.write("#  - { group: string, type: string, port: int, bossThread: int,  workerThread: int }...\r\n");
 			writer.write("#\r\n");
-			writer.write("# client: (type: tcp, ws)\r\n");
+			writer.write("# client: (type: tcp, http)\r\n");
 			writer.write("#  - { group: string, type: string, workerThread: int }...\r\n");
 			writer.write("#\r\n");
 			writer.write("# database: (type: oracle, tibero, sqlite)\r\n");
