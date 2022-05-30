@@ -12,6 +12,7 @@ public class PropertyPool {
 	public synchronized static void loadProperties(String configPath) throws IOException {
 		File file = new File(configPath + File.separator + "application.properties");
 		if (!file.exists()) {
+			properties = new Properties();
 			return;
 		}
 		
