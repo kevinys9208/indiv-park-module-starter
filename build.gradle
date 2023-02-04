@@ -1,0 +1,45 @@
+plugins {
+	id 'java'
+	id 'java-library'
+	id 'maven-publish'
+}
+
+group = 'com.github.kevinys9208'
+version 'v0.0.1-alpha'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+	api 'org.yaml:snakeyaml:1.29'
+	api 'ch.qos.logback:logback-classic:1.2.10'
+	api 'org.codehaus.janino:janino:3.1.6'
+	api 'org.reflections:reflections:0.10.2'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			from components.java
+		}
+	}
+}
+
+sourceSets { 
+	main { 
+		resources { 
+			srcDirs "src/main/resources"
+		} 
+	} 
+}
+
+compileJava {
+	options.release = 8
+	options.encoding = 'UTF-8'
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration debug="false">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="STDOUT-FILE" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>ID</key>
+			<defaultValue>Application</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${deviceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${user.dir}/logs/${ID}/${ID}.log</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${user.dir}/logs/${ID}/${ID}_%d{yyyy-MM-dd}_%i.log.zip
+					</fileNamePattern>
+					<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>30MB</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+					<maxHistory>7</maxHistory>
+				</rollingPolicy>
+				<encoder>
+					<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+	
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="STDOUT-FILE" />
+	</root>
+	
+	<logger name="org" level="off"></logger>
+	
+</configuration>
