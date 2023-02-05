@@ -9,22 +9,18 @@ public class PropertyPool {
 
 	private static Properties properties;
 
+	private PropertyPool() {}
+
 	public synchronized static void loadProperties(String configPath) throws IOException {
 		File file = new File(configPath + File.separator + "application.properties");
 		if (!file.exists()) {
 			properties = new Properties();
 			return;
 		}
-		
-		FileReader fileReader = null;
-		try {
-			fileReader = new FileReader(file);
-			
+
+		try (FileReader fileReader = new FileReader(file)) {
 			properties = new Properties();
 			properties.load(fileReader);
-
-		} finally {
-			if (fileReader != null) fileReader.close();
 		}
 	}
 

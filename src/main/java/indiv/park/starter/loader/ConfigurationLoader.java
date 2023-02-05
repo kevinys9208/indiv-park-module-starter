@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
@@ -23,35 +24,34 @@ public final class ConfigurationLoader {
 		
 		initialize(configPath);
 		PropertyPool.loadProperties(configPath);
-		
-		Map<String, Object> configuration = loadConfiguration(configPath);
-		
-		return configuration;
+
+		return loadConfiguration(configPath);
 	}
 	
 	private void initialize(String configPath) throws IOException {
 		File config = new File(configPath);
 		if (!config.exists()) {
 			logger.info("초기 환경을 구성합니다.");
-			config.mkdir();
-			
-			logger.info("modules.yml 파일을 생성합니다.");
-			createApplicataionYAML(new File(configPath +  File.separator + "module.yml"));
-			
+
+			if (config.mkdir()) {
+				logger.info("modules.yml 파일을 생성합니다.");
+				createApplicationYAML(new File(configPath +  File.separator + "module.yml"));
+			}
+
 			logger.info("프로세스를 재시작해 주시기 바랍니다.");
 			System.exit(0);
 		}
 	}
 	
 	private Map<String, Object> loadConfiguration(String configPath) throws IOException {
-		Map<String, Object> configuration 	= null;
 		FileInputStream fileInputStream = null;
-		
+		Map<String, Object> configuration;
+
 		try {
 			File yml = new File(configPath + File.separator + "module.yml");
 			if (!yml.exists()) {
 				logger.info("module.yml 파일을 생성합니다.");
-				createApplicataionYAML(new File(configPath + File.separator + "module.yml"));
+				createApplicationYAML(new File(configPath + File.separator + "module.yml"));
 				
 				logger.info("프로세스를 재시작해 주시기 바랍니다.");
 				System.exit(0);
@@ -69,30 +69,30 @@ public final class ConfigurationLoader {
 		}
 	}
 
-	private void createApplicataionYAML(File file) throws IOException {
+	private void createApplicationYAML(File file) throws IOException {
 		BufferedWriter writer 	= null;
 		OutputStreamWriter os 	= null;
 		FileOutputStream fos	= null;
 
 		try {
-			file.createNewFile();
+			if (file.createNewFile()) {
+				fos = new FileOutputStream(file, false);
+				os = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+				writer = new BufferedWriter(os);
 
-			fos 	= new FileOutputStream(file, false);
-			os 		= new OutputStreamWriter(fos, "UTF-8");
-			writer	= new BufferedWriter(os);
-			
-			writer.write("# 모듈을 구성하기 위한 설정 정보는 리스트의 형태로 작성되어야 합니다.\r\n");
-			writer.write("#\r\n");
-			writer.write("# server: (type: tcp, http)\r\n");
-			writer.write("#  - { group: string, type: string, port: int, bossThread: int,  workerThread: int }...\r\n");
-			writer.write("#\r\n");
-			writer.write("# client: (type: tcp, http)\r\n");
-			writer.write("#  - { group: string, type: string, workerThread: int }...\r\n");
-			writer.write("#\r\n");
-			writer.write("# database: (type: oracle, tibero)\r\n");
-			writer.write("#  - { name: string, type: string, ip: string, port: int, sid: string, user: string, password: string }...");
-			
-			writer.flush();
+				writer.write("# 모듈을 구성하기 위한 설정 정보는 리스트의 형태로 작성되어야 합니다.\r\n");
+				writer.write("#\r\n");
+				writer.write("# server: (type: tcp, http)\r\n");
+				writer.write("#  - { group: string, type: string, port: int, bossThread: int,  workerThread: int }...\r\n");
+				writer.write("#\r\n");
+				writer.write("# client: (type: tcp, http)\r\n");
+				writer.write("#  - { group: string, type: string, workerThread: int }...\r\n");
+				writer.write("#\r\n");
+				writer.write("# database: (type: oracle, tibero)\r\n");
+				writer.write("#  - { name: string, type: string, ip: string, port: int, sid: string, user: string, password: string }...");
+
+				writer.flush();
+			}
 
 		} finally {
 			if (writer 	!= null)	writer.close();

@@ -62,8 +62,7 @@ public final class ModuleLoader {
 	private void showFoundModule(Set<Class<?>> moduleSet) {
 		final String found = "확인된 모듈 : {}";
 		
-		for (Class<?> clazz : moduleSet) {
+		for (Class<?> clazz : moduleSet)
 			logger.info(found, clazz.getSimpleName());
-		}
 	}
 }

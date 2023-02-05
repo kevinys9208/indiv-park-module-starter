@@ -9,8 +9,7 @@ public class TaskExecutor {
 
 	private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
 
-	private TaskExecutor() {
-	}
+	private TaskExecutor() {}
 
 	public static void execute(Runnable runnable) {
 		executor.execute(runnable);

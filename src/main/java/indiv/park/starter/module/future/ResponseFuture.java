@@ -24,18 +24,18 @@ public class ResponseFuture<K, V> {
 	private V response;
 	
 	public static <K, V> ResponseFuture<K, V> newInstance(K id, ResponseFutureListener<K, V> remover) {
-		return new ResponseFuture<K, V>(id, remover);
+		return new ResponseFuture<>(id, remover);
 	}
 
-	public V get() throws InterruptedException, ExecutionException {
+	public V get() throws InterruptedException {
 		countDownLatch.await();
 		remover.operationComplete(this);
         return response;
 	}
 
-	public V get(long timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
-		countDownLatch.await(timeout, timeUnit);
-		remover.operationComplete(this);
+	public V get(long timeout, TimeUnit timeUnit) throws InterruptedException {
+		if (countDownLatch.await(timeout, timeUnit))
+			remover.operationComplete(this);
 		return response;
 	}
 
@@ -45,9 +45,6 @@ public class ResponseFuture<K, V> {
 	}
 	
 	public boolean isDone() {
-		if (response != null) {
-			return true;
-		}
-		return false;
+		return response != null;
 	}
 }
